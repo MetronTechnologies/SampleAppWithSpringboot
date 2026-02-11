@@ -4,13 +4,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.fcmb.audit_lib.service.AuditService;
+import com.fcmb.mainapplication.dto.CreateUserRequest;
 import com.fcmb.mainapplication.dto.LoginRequest;
 import com.fcmb.mainapplication.repository.UserRepository;
 import com.fcmb.security.service.AuthenticationService;
 import com.fcmb.shared.dto.ApiResponse;
 import com.fcmb.shared.entity.User;
+import com.fcmb.shared.exception.ApplicationException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +25,10 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthService {
 
     private final UserRepository userRepository;
-    // private final AuditRepository auditRepository;
     private final AuthenticationService authenticationService;
     private final AuditService auditService;
     private final HttpServletRequest request;
+    private final PasswordEncoder passwordEncoder;
 
     public ApiResponse<String> getToken(LoginRequest loginRequest) {
 
@@ -71,5 +74,26 @@ public class AuthService {
 
         return ApiResponse.success(user, "About me", HttpStatus.OK.value(), request.getRequestURI());
     }
+
+
+
+
+    public ApiResponse<User> createUser(CreateUserRequest dto) {
+
+        if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
+            throw new RuntimeException("Username already exists");
+        }
+
+        User user = new User();
+        user.setUsername(dto.getUsername());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setRoles(dto.getRoles());
+        user.setEnabled(dto.isEnabled());
+
+        User saved = userRepository.save(user);
+
+        return ApiResponse.success(saved, "User created successfully", 201, request.getRequestURI());
+    }
+
 
 }
