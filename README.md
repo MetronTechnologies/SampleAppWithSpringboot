@@ -1,3 +1,14 @@
+Jeremiah Ekanem
+
+
+
+
+
+
+
+
+
+
 this is a multi-module springboot application that allows users to login, create other users all while under strict rules of authorization and authentication
 
 
