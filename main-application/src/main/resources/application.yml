@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=fcmbsampleapp;encrypt=true;trustServerCertificate=true
+    username: sa
+    password: "@235711131719Adrian"
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+security:
+  jwt:
+    secret: this-is-a-very-long-secret-key-change-me
+    expiration-millis: 3600000
+
+
+server:
+  port: 8080
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs/v1          # Local OpenAPI JSON endpoint
+    packages-to-scan: com.fcmb.mainapplication.controller
+    default-produces-media-type: application/json
+  swagger-ui:
+    enabled: true
+    url: /v3/api-docs           # Force Swagger UI to use local JSON
+    display-request-duration: true
+  model-and-view-allowed: false
+
+
+

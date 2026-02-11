@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=fcmbsampleapp;encrypt=true;trustServerCertificate=true
+    username: sa
+    password: "@235711131719Adrian"
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+security:
+  jwt:
+    secret: this-is-a-very-long-secret-key-change-me
+    expiration-millis: 3600000
+
+
+server:
+  port: 8080
+
+
